@@ -13,6 +13,7 @@ import { Fuel } from '../fuels';
 import { Transmission } from '../transmissions';
 import { Plate } from '../plates';
 import { VehicleType } from '../vehicle-types';
+import { Valute } from '../valutes';
 
 @Entity()
 export class Listing extends BaseEntity {
@@ -94,6 +95,12 @@ export class Listing extends BaseEntity {
 
   // @Column()
   // valute: Valute;
+  @ManyToOne(
+    type => Valute,
+    model => model.listings,
+    { eager: false },
+  )
+  model: Valute;
 
   @Column()
   quantity: number;

@@ -10,6 +10,7 @@ import { FuelsModule } from './fuels/fuels.module';
 import { TransmissionsModule } from './transmissions/transmissions.module';
 import { PlatesModule } from './plates/plates.module';
 import { VehicleTypesModule } from './vehicle-types/vehicle-types.module';
+import { ValutesModule } from './valutes/valutes.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { VehicleTypesModule } from './vehicle-types/vehicle-types.module';
     TransmissionsModule,
     PlatesModule,
     VehicleTypesModule,
+    ValutesModule,
   ],
 })
 export class AppModule {}
