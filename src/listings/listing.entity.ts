@@ -10,6 +10,7 @@ import { User } from '../users/user.entity';
 import { Location } from '../locations';
 import { Color } from '../colors';
 import { Fuel } from '../fuels';
+import { Transmission } from '../transmissions';
 
 @Entity()
 export class Listing extends BaseEntity {
@@ -29,12 +30,12 @@ export class Listing extends BaseEntity {
   // )
   // type: Type;
 
-  // @ManyToOne(
-  //   type => Transmission,
-  //   transmission => transmission.listings,
-  //   { eager: false },
-  // )
-  // transmission: Transmission;
+  @ManyToOne(
+    type => Transmission,
+    transmission => transmission.listings,
+    { eager: false },
+  )
+  transmission: Transmission;
 
   @Column()
   year: number;
