@@ -6,12 +6,13 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { ListingStatus } from './listing-status.enum';
-import { User } from '../users/user.entity';
+import { User } from '../users';
 import { Location } from '../locations';
 import { Color } from '../colors';
 import { Fuel } from '../fuels';
 import { Transmission } from '../transmissions';
 import { Plate } from '../plates';
+import { VehicleType } from '../vehicle-types';
 
 @Entity()
 export class Listing extends BaseEntity {
@@ -24,12 +25,12 @@ export class Listing extends BaseEntity {
   @Column()
   description: string;
 
-  // @ManyToOne(
-  //   type => Type,
-  //   type => type.listings,
-  //   { eager: false },
-  // )
-  // type: Type;
+  @ManyToOne(
+    type => VehicleType,
+    type => type.listings,
+    { eager: false },
+  )
+  type: VehicleType;
 
   @ManyToOne(
     type => Transmission,
