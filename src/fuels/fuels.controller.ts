@@ -42,7 +42,7 @@ export class FuelsController {
     return this.fuelsService.createFuel(createFuelDto, user);
   }
 
-  @Delete(':/id')
+  @Delete('/:id')
   @UseGuards(AuthGuard())
   public deleteFuel(
     @Param('id', ParseIntPipe) id: number,

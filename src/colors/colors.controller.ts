@@ -42,7 +42,7 @@ export class ColorsController {
     return this.colorsService.createColor(createColorDto, user);
   }
 
-  @Delete(':/id')
+  @Delete('/:id')
   @UseGuards(AuthGuard())
   public deleteColor(
     @Param('id', ParseIntPipe) id: number,

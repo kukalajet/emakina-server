@@ -45,7 +45,7 @@ export class TransmissionsController {
     );
   }
 
-  @Delete(':/id')
+  @Delete('/:id')
   @UseGuards(AuthGuard())
   public deleteTransmission(
     @Param('id', ParseIntPipe) id: number,

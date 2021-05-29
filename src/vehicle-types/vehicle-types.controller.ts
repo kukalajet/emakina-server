@@ -45,7 +45,7 @@ export class VehicleTypesController {
     );
   }
 
-  @Delete(':/id')
+  @Delete('/:id')
   @UseGuards(AuthGuard())
   public deleteVehicleType(
     @Param('id', ParseIntPipe) id: number,

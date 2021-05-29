@@ -42,7 +42,7 @@ export class PlatesController {
     return this.platesService.createPlate(createPlateDto, user);
   }
 
-  @Delete(':/id')
+  @Delete('/:id')
   @UseGuards(AuthGuard())
   public deletePlate(
     @Param('id', ParseIntPipe) id: number,

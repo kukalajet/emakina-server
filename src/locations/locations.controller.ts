@@ -42,7 +42,7 @@ export class LocationsController {
     return this.locationsService.createLocation(createLocationDto, user);
   }
 
-  @Delete(':/id')
+  @Delete('/:id')
   @UseGuards(AuthGuard())
   public deleteLocation(
     @Param('id', ParseIntPipe) id: number,
