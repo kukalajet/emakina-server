@@ -1,0 +1,16 @@
+server:
+  origin: postgres://xfbqivtyfreouj:bd0a7722548d8cbd6fc73f8d509ad5c0179fd54994da5896e22c18e08868ebd6@ec2-54-163-47-62.compute-1.amazonaws.com:5432/d9uf614cip0vub
+  port: 8080
+
+db:
+  host: 'ec2-54-163-47-62.compute-1.amazonaws.com'
+  username: 'xfbqivtyfreouj'
+  password: 'bd0a7722548d8cbd6fc73f8d509ad5c0179fd54994da5896e22c18e08868ebd6'
+  database: 'd9uf614cip0vub'
+  synchronize: true
+
+jwt:
+  secret: 'topSecret51'
+
+auth:
+  google_client_id: '104417906133543098950'

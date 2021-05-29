@@ -1,0 +1,9 @@
+db:
+  type: 'postgres'
+  port: 5432
+
+jwt:
+  expiresIn: 518400
+
+auth:
+  google_client_id: 'xxx'
