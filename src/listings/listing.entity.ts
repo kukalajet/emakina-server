@@ -11,6 +11,7 @@ import { Location } from '../locations';
 import { Color } from '../colors';
 import { Fuel } from '../fuels';
 import { Transmission } from '../transmissions';
+import { Plate } from '../plates';
 
 @Entity()
 export class Listing extends BaseEntity {
@@ -52,12 +53,12 @@ export class Listing extends BaseEntity {
 
   // TODO: add images.
 
-  // @ManyToOne(
-  //   type => Plate,
-  //   plate => plate.listings,
-  //   { eager: false },
-  // )
-  // plate: Plate;
+  @ManyToOne(
+    type => Plate,
+    plate => plate.listings,
+    { eager: false },
+  )
+  plate: Plate;
 
   @ManyToOne(
     type => Color,

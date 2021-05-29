@@ -8,6 +8,7 @@ import { LocationsModule } from './locations/locations.module';
 import { ColorsModule } from './colors/colors.module';
 import { FuelsModule } from './fuels/fuels.module';
 import { TransmissionsModule } from './transmissions/transmissions.module';
+import { PlatesModule } from './plates/plates.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TransmissionsModule } from './transmissions/transmissions.module';
     ColorsModule,
     FuelsModule,
     TransmissionsModule,
+    PlatesModule,
   ],
 })
 export class AppModule {}

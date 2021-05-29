@@ -8,16 +8,16 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Transmission extends BaseEntity {
+export class Plate extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  type: string;
+  name: string;
 
   @OneToMany(
     type => Listing,
-    listing => listing.transmission,
+    listing => listing.plate,
     { eager: true },
   )
   listings: Listing[];
