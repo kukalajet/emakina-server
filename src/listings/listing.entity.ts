@@ -9,6 +9,7 @@ import { ListingStatus } from './listing-status.enum';
 import { User } from '../users/user.entity';
 import { Location } from '../locations';
 import { Color } from '../colors';
+import { Fuel } from '../fuels';
 
 @Entity()
 export class Listing extends BaseEntity {
@@ -41,12 +42,12 @@ export class Listing extends BaseEntity {
   @Column()
   mileage: number;
 
-  // @ManyToOne(
-  //   type => Fuel,
-  //   fuel => fuel.listings,
-  //   { eager: false },
-  // )
-  // fuel: Fuel;
+  @ManyToOne(
+    type => Fuel,
+    fuel => fuel.listings,
+    { eager: false },
+  )
+  fuel: Fuel;
 
   // TODO: add images.
 

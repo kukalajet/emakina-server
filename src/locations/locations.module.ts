@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 import { LocationsController } from './locations.controller';
 import { LocationRepository } from './locations.repository';
 import { LocationsService } from './locations.service';
