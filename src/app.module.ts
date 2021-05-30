@@ -11,6 +11,8 @@ import { TransmissionsModule } from './transmissions/transmissions.module';
 import { PlatesModule } from './plates/plates.module';
 import { VehicleTypesModule } from './vehicle-types/vehicle-types.module';
 import { ValutesModule } from './valutes/valutes.module';
+import { ManufacturersModule } from './manufacturers/manufacturers.module';
+import { ModelsModule } from './models/models.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { ValutesModule } from './valutes/valutes.module';
     PlatesModule,
     VehicleTypesModule,
     ValutesModule,
+    ManufacturersModule,
+    ModelsModule,
   ],
 })
 export class AppModule {}

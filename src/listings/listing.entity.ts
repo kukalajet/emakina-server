@@ -14,6 +14,8 @@ import { Transmission } from '../transmissions';
 import { Plate } from '../plates';
 import { VehicleType } from '../vehicle-types';
 import { Valute } from '../valutes';
+import { Manufacturer } from '../manufacturers';
+import { Model } from '../models';
 
 @Entity()
 export class Listing extends BaseEntity {
@@ -76,31 +78,29 @@ export class Listing extends BaseEntity {
   )
   location: Location;
 
-  // @ManyToOne(
-  //   type => Manufacturer,
-  //   manufacturer => manufacturer.listings,
-  //   { eager: false },
-  // )
-  // manufacturer: Manufacturer;
+  @ManyToOne(
+    type => Manufacturer,
+    manufacturer => manufacturer.listings,
+    { eager: false },
+  )
+  manufacturer: Manufacturer;
 
-  // @ManyToOne(
-  //   type => Model,
-  //   model => model.listings,
-  //   { eager: false },
-  // )
-  // model: Model;
+  @ManyToOne(
+    type => Model,
+    model => model.listings,
+    { eager: false },
+  )
+  model: Model;
 
   @Column()
   price: number;
 
-  // @Column()
-  // valute: Valute;
   @ManyToOne(
     type => Valute,
     model => model.listings,
     { eager: false },
   )
-  model: Valute;
+  valute: Valute;
 
   @Column()
   quantity: number;

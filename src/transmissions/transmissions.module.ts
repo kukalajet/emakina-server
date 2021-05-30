@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 import { TransmissionRepository } from './transmission.repository';
 import { TransmissionsController } from './transmissions.controller';
 import { TransmissionsService } from './transmissions.service';
