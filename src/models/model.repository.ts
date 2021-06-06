@@ -3,6 +3,8 @@ import { User } from '../users';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateModelDto } from './create-model.dto';
 import { Model } from './model.entity';
+import { ManufacturersModule } from 'src/manufacturers/manufacturers.module';
+import { Manufacturer } from 'src/manufacturers';
 
 @EntityRepository(Model)
 export class ModelRepository extends Repository<Model> {
@@ -20,11 +22,14 @@ export class ModelRepository extends Repository<Model> {
     }
   }
 
-  public async createModel(createModelDto: CreateModelDto, user: User) {
-    const { name } = createModelDto;
-
+  public async createModel(
+    name: string,
+    manufacturer: Manufacturer,
+    user: User,
+  ) {
     const model = new Model();
     model.name = name;
+    model.manufacturer = manufacturer;
 
     try {
       await model.save();
@@ -32,7 +37,7 @@ export class ModelRepository extends Repository<Model> {
       this.logger.error(
         `Failed to create model by user with ID "${
           user.id
-        }". Data: ${JSON.stringify(createModelDto)}`,
+        }". Data: ${JSON.stringify(model)}`,
         error.stack,
       );
       throw new InternalServerErrorException();

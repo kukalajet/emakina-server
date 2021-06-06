@@ -1,4 +1,10 @@
-import { IsEmail, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class RegisterCredentialsDto {
   @IsString()
@@ -11,5 +17,10 @@ export class RegisterCredentialsDto {
   email: string;
 
   @IsString()
+  @MinLength(8)
+  @MaxLength(20)
+  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message: 'password too weak',
+  })
   password: string;
 }

@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../users/get-user.decorator';
@@ -31,7 +32,7 @@ export class ColorsController {
   @Post()
   @UseGuards(AuthGuard())
   public createColor(
-    @Body() createColorDto: CreateColorDto,
+    @Body(ValidationPipe) createColorDto: CreateColorDto,
     @GetUser() user: User,
   ): Promise<Color> {
     this.logger.verbose(

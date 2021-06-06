@@ -103,9 +103,6 @@ export class Listing extends BaseEntity {
   valute: Valute;
 
   @Column()
-  quantity: number;
-
-  @Column()
   status: ListingStatus;
 
   @ManyToOne(

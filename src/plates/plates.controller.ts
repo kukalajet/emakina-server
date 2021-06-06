@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../users/get-user.decorator';
@@ -31,7 +32,7 @@ export class PlatesController {
   @Post()
   @UseGuards(AuthGuard())
   public createPlate(
-    @Body() createPlateDto: CreatePlateDto,
+    @Body(ValidationPipe) createPlateDto: CreatePlateDto,
     @GetUser() user: User,
   ): Promise<Plate> {
     this.logger.verbose(

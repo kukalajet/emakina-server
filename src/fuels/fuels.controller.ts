@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../users/get-user.decorator';
@@ -31,7 +32,7 @@ export class FuelsController {
   @Post()
   @UseGuards(AuthGuard())
   public createFuel(
-    @Body() createFuelDto: CreateFuelDto,
+    @Body(ValidationPipe) createFuelDto: CreateFuelDto,
     @GetUser() user: User,
   ): Promise<Fuel> {
     this.logger.verbose(

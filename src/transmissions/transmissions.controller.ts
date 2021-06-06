@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../users/get-user.decorator';
@@ -31,7 +32,7 @@ export class TransmissionsController {
   @Post()
   @UseGuards(AuthGuard())
   public createTransmission(
-    @Body() createTransmissionDto: CreateTransmissionDto,
+    @Body(ValidationPipe) createTransmissionDto: CreateTransmissionDto,
     @GetUser() user: User,
   ): Promise<Transmission> {
     this.logger.verbose(

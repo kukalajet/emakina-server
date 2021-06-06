@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../users/get-user.decorator';
@@ -31,7 +32,7 @@ export class ManufacturersController {
   @Post()
   @UseGuards(AuthGuard())
   public createManufacturer(
-    @Body() createManufacturerDto: CreateManufacturerDto,
+    @Body(ValidationPipe) createManufacturerDto: CreateManufacturerDto,
     @GetUser() user: User,
   ): Promise<Manufacturer> {
     this.logger.verbose(

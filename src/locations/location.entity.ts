@@ -6,7 +6,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Listing } from '../listings';
-import { Locations } from './locations.enum';
 
 @Entity()
 export class Location extends BaseEntity {

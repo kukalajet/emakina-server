@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../users/get-user.decorator';
@@ -31,7 +32,7 @@ export class LocationsController {
   @Post()
   @UseGuards(AuthGuard())
   public createLocation(
-    @Body() createLocationDto: CreateLocationDto,
+    @Body(ValidationPipe) createLocationDto: CreateLocationDto,
     @GetUser() user: User,
   ): Promise<Location> {
     this.logger.verbose(
