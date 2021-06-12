@@ -15,6 +15,7 @@ import { User, GetUser } from '../users';
 import { CreateListingDto } from './create-listing.dto';
 import { Listing } from './listing.entity';
 import { ListingsService } from './listings.service';
+import { SearchListingDto } from './search-listing.dto';
 
 @Controller('listings')
 export class ListingsController {
@@ -23,9 +24,19 @@ export class ListingsController {
   constructor(private listingsService: ListingsService) {}
 
   @Get()
-  public getListings() {
+  public getListings(): Promise<Listing[]> {
     this.logger.verbose('Retrieve all listings.');
     return this.listingsService.getListings();
+  }
+
+  @Post('searches')
+  public getSeachedListings(
+    @Body(ValidationPipe) searchListingDto: SearchListingDto,
+  ): Promise<Listing[]> {
+    this.logger.verbose(
+      `Searching for listings. Query: ${JSON.stringify(searchListingDto)}.`,
+    );
+    return this.listingsService.searchListings(searchListingDto);
   }
 
   @Post()

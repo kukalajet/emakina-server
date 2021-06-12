@@ -13,6 +13,7 @@ import { Listing } from './listing.entity';
 import { ListingRepository } from './listing.repository';
 import { ModelRepository } from '../models/model.repository';
 import { ValuteRepository } from '../valutes/valute.repository';
+import { SearchListingDto } from './search-listing.dto';
 
 @Injectable()
 export class ListingsService {
@@ -40,6 +41,12 @@ export class ListingsService {
 
   public async getListings(): Promise<Listing[]> {
     return this.listingRepository.getListings();
+  }
+
+  public async searchListings(
+    searchListingDto: SearchListingDto,
+  ): Promise<Listing[]> {
+    return this.listingRepository.searchListings(searchListingDto);
   }
 
   public async deleteListing(id: number, user: User): Promise<void> {

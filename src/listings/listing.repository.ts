@@ -12,6 +12,7 @@ import { Manufacturer } from '../manufacturers';
 import { Model } from '../models';
 import { Valute } from '../valutes';
 import { ListingStatus } from './listing-status.enum';
+import { SearchListingDto } from './search-listing.dto';
 
 @EntityRepository(Listing)
 export class ListingRepository extends Repository<Listing> {
@@ -34,6 +35,88 @@ export class ListingRepository extends Repository<Listing> {
       return listings;
     } catch (error) {
       this.logger.error(`Failed to get listings.`, error.stack);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  // TODO: Handle various valutes when querying.
+  public async searchListings(
+    searchListingDto: SearchListingDto,
+  ): Promise<Listing[]> {
+    const query = this.createQueryBuilder('listing')
+      .leftJoinAndSelect('listing.type', 'vehicle_type')
+      .leftJoinAndSelect('listing.transmission', 'transmission')
+      .leftJoinAndSelect('listing.fuel', 'fuel')
+      .leftJoinAndSelect('listing.plate', 'plate')
+      .leftJoinAndSelect('listing.color', 'color')
+      .leftJoinAndSelect('listing.location', 'location')
+      .leftJoinAndSelect('listing.manufacturer', 'manufacturer')
+      .leftJoinAndSelect('listing.model', 'model')
+      .leftJoinAndSelect('listing.valute', 'valute');
+
+    if (searchListingDto.manufacturerId) {
+      query.andWhere('listing.manufacturerId = :manufacturerId', {
+        manufacturerId: searchListingDto.manufacturerId,
+      });
+    }
+
+    if (searchListingDto.modelId) {
+      query.andWhere('listing.modelId = :modelId', {
+        modelId: searchListingDto.modelId,
+      });
+    }
+
+    if (searchListingDto.fuelId) {
+      query.andWhere('listing.fuelId = :fuelId', {
+        fuelId: searchListingDto.fuelId,
+      });
+    }
+
+    if (searchListingDto.transmissionId) {
+      query.andWhere('listing.transmissionId = :transmissionId', {
+        transmissionId: searchListingDto.transmissionId,
+      });
+    }
+
+    if (searchListingDto.valuteId) {
+      query.andWhere('listing.valuteId = :valuteId', {
+        valuteId: searchListingDto.valuteId,
+      });
+    }
+
+    if (searchListingDto.matriculation?.length) {
+      if (searchListingDto.matriculation[0]) {
+        query.andWhere('listing.year > :matriculation', {
+          matriculation: searchListingDto.matriculation[0],
+        });
+      }
+
+      if (searchListingDto.matriculation[1]) {
+        query.andWhere('listing.year < :matriculation', {
+          matriculation: searchListingDto.matriculation[1],
+        });
+      }
+    }
+
+    if (searchListingDto.price?.length) {
+      if (searchListingDto.price[0]) {
+        query.andWhere('listing.price > :price', {
+          price: searchListingDto.price[0],
+        });
+      }
+
+      if (searchListingDto.price[1]) {
+        query.andWhere('listing.price < :price', {
+          price: searchListingDto.price[1],
+        });
+      }
+    }
+
+    try {
+      const listings = await query.getMany();
+      return listings;
+    } catch (error) {
+      this.logger.error(`Failed to search for listings.`, error.stack);
       throw new InternalServerErrorException();
     }
   }
