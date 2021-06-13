@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationDto } from 'src/listings/pagination.dto';
 import { User } from '../users/user.entity';
 import { CreateLocationDto } from './create-location.dto';
 import { Location } from './location.entity';
@@ -12,8 +13,8 @@ export class LocationsService {
     private locationRepository: LocationRepository,
   ) {}
 
-  public async getLocations(): Promise<Location[]> {
-    return this.locationRepository.getLocations();
+  public async getLocations(paginationDto: PaginationDto): Promise<Location[]> {
+    return this.locationRepository.getLocations(paginationDto);
   }
 
   public async deleteLocation(id: number, user: User): Promise<void> {

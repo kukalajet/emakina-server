@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -16,6 +17,7 @@ import { User } from '../users/user.entity';
 import { CreateLocationDto } from './create-location.dto';
 import { Location } from './location.entity';
 import { LocationsService } from './locations.service';
+import { PaginationDto } from './pagination.dto';
 
 @Controller('locations')
 export class LocationsController {
@@ -24,9 +26,16 @@ export class LocationsController {
   constructor(private locationsService: LocationsService) {}
 
   @Get()
-  public getLocations() {
-    this.logger.verbose('Retrieving all locations.');
-    return this.locationsService.getLocations();
+  public getLocations(
+    @Query(ValidationPipe) paginationDto: PaginationDto,
+  ): Promise<Location[]> {
+    this.logger.verbose(
+      `Retrieving all locations. Query: ${JSON.stringify(paginationDto)}`,
+    );
+    return this.locationsService.getLocations({
+      ...paginationDto,
+      limit: paginationDto.limit > 20 ? 20 : paginationDto.limit,
+    });
   }
 
   @Post()

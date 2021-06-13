@@ -21,7 +21,7 @@ export class ListingRepository extends Repository<Listing> {
 
   public async getListings(paginationDto: PaginationDto): Promise<Listing[]> {
     const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
-    const totalCount = await this.count();
+    // const totalCount = await this.count();
 
     const query = this.createQueryBuilder('listing')
       // .orderBy('createdAt', 'DESC')

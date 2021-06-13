@@ -3,13 +3,20 @@ import { User } from '../users';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateLocationDto } from './create-location.dto';
 import { Location } from './location.entity';
+import { PaginationDto } from './pagination.dto';
 
 @EntityRepository(Location)
 export class LocationRepository extends Repository<Location> {
   private logger = new Logger('LocationRepository');
 
-  public async getLocations(): Promise<Location[]> {
-    const query = this.createQueryBuilder('location');
+  public async getLocations(paginationDto: PaginationDto): Promise<Location[]> {
+    const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
+    // const totalCount = await this.count();
+
+    const query = this.createQueryBuilder('location')
+      // .orderBy('createdAt', 'DESC')
+      .offset(skippedItems)
+      .limit(paginationDto.limit);
 
     try {
       const locations = await query.getMany();
