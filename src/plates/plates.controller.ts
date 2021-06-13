@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../users/get-user.decorator';
 import { User } from '../users/user.entity';
 import { CreatePlateDto } from './create-plate.dto';
+import { PaginationDto } from './pagination.dto';
 import { Plate } from './plate.entity';
 import { PlatesService } from './plates.service';
 
@@ -24,9 +26,12 @@ export class PlatesController {
   constructor(private platesService: PlatesService) {}
 
   @Get()
-  public getPlates() {
+  public getPlates(@Query(ValidationPipe) paginationDto: PaginationDto) {
     this.logger.verbose('Retrieving all plates.');
-    return this.platesService.getPlates();
+    return this.platesService.getPlates({
+      ...paginationDto,
+      limit: paginationDto.limit > 20 ? 20 : paginationDto.limit,
+    });
   }
 
   @Post()

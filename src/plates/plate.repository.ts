@@ -3,13 +3,20 @@ import { User } from '../users';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreatePlateDto } from './create-plate.dto';
 import { Plate } from './plate.entity';
+import { PaginationDto } from './pagination.dto';
 
 @EntityRepository(Plate)
 export class PlateRepository extends Repository<Plate> {
   private logger = new Logger('PlateRepository');
 
-  public async getPlates(): Promise<Plate[]> {
-    const query = this.createQueryBuilder('plate');
+  public async getPlates(paginationDto: PaginationDto): Promise<Plate[]> {
+    const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
+    // const totalCount = await this.count();
+
+    const query = this.createQueryBuilder('plate')
+      // .orderBy('createdAt', 'DESC')
+      .offset(skippedItems)
+      .limit(paginationDto.limit);
 
     try {
       const plates = await query.getMany();

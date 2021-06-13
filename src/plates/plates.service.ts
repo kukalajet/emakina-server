@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../users/user.entity';
 import { CreatePlateDto } from './create-plate.dto';
+import { PaginationDto } from './pagination.dto';
 import { Plate } from './plate.entity';
 import { PlateRepository } from './plate.repository';
 
@@ -12,8 +13,8 @@ export class PlatesService {
     private plateRepository: PlateRepository,
   ) {}
 
-  public async getPlates(): Promise<Plate[]> {
-    return this.plateRepository.getPlates();
+  public async getPlates(paginationDto: PaginationDto): Promise<Plate[]> {
+    return this.plateRepository.getPlates(paginationDto);
   }
 
   public async deletePlate(id: number, user: User): Promise<void> {
