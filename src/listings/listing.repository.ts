@@ -13,13 +13,20 @@ import { Model } from '../models';
 import { Valute } from '../valutes';
 import { ListingStatus } from './listing-status.enum';
 import { SearchListingDto } from './search-listing.dto';
+import { PaginationDto } from './pagination.dto';
 
 @EntityRepository(Listing)
 export class ListingRepository extends Repository<Listing> {
   private logger = new Logger('ListingRepository');
 
-  public async getListings(): Promise<Listing[]> {
+  public async getListings(paginationDto: PaginationDto): Promise<Listing[]> {
+    const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
+    const totalCount = await this.count();
+
     const query = this.createQueryBuilder('listing')
+      // .orderBy('createdAt', 'DESC')
+      .offset(skippedItems)
+      .limit(paginationDto.limit)
       .leftJoinAndSelect('listing.type', 'vehicle_type')
       .leftJoinAndSelect('listing.transmission', 'transmission')
       .leftJoinAndSelect('listing.fuel', 'fuel')
@@ -169,6 +176,18 @@ export class ListingRepository extends Repository<Listing> {
     }
 
     delete listing.user;
+    if (listing.type) delete listing.type.listings;
+    if (listing.transmission) delete listing.transmission.listings;
+    if (listing.fuel) delete listing.fuel.listings;
+    if (listing.plate) delete listing.plate.listings;
+    if (listing.color) delete listing.color.listings;
+    if (listing.location) delete listing.location.listings;
+    if (listing.manufacturer) delete listing.manufacturer.listings;
+    if (listing.model) {
+      delete listing.model.listings;
+      delete listing.model.manufacturer;
+    }
+    if (listing.valute) delete listing.valute.listings;
 
     return listing;
   }

@@ -14,6 +14,8 @@ import { ListingRepository } from './listing.repository';
 import { ModelRepository } from '../models/model.repository';
 import { ValuteRepository } from '../valutes/valute.repository';
 import { SearchListingDto } from './search-listing.dto';
+import { PaginationDto } from './pagination.dto';
+import { PaginatedListingsDto } from './paginated-listings.dto';
 
 @Injectable()
 export class ListingsService {
@@ -39,8 +41,8 @@ export class ListingsService {
     private valuteRepository: ValuteRepository,
   ) {}
 
-  public async getListings(): Promise<Listing[]> {
-    return this.listingRepository.getListings();
+  public async getListings(paginationDto: PaginationDto): Promise<Listing[]> {
+    return this.listingRepository.getListings(paginationDto);
   }
 
   public async searchListings(

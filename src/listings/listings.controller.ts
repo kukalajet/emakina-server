@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -15,6 +16,8 @@ import { User, GetUser } from '../users';
 import { CreateListingDto } from './create-listing.dto';
 import { Listing } from './listing.entity';
 import { ListingsService } from './listings.service';
+import { PaginatedListingsDto } from './paginated-listings.dto';
+import { PaginationDto } from './pagination.dto';
 import { SearchListingDto } from './search-listing.dto';
 
 @Controller('listings')
@@ -24,9 +27,17 @@ export class ListingsController {
   constructor(private listingsService: ListingsService) {}
 
   @Get()
-  public getListings(): Promise<Listing[]> {
-    this.logger.verbose('Retrieve all listings.');
-    return this.listingsService.getListings();
+  public getListings(
+    @Query(ValidationPipe) paginationDto: PaginationDto,
+  ): Promise<Listing[]> {
+    this.logger.verbose(
+      `Retrieve all listings. Data: ${JSON.stringify(paginationDto)}`,
+    );
+
+    return this.listingsService.getListings({
+      ...paginationDto,
+      limit: paginationDto.limit > 20 ? 20 : paginationDto.limit,
+    });
   }
 
   @Post('searches')
