@@ -3,13 +3,22 @@ import { User } from '../users';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateManufacturerDto } from './create-manufacturer.dto';
 import { Manufacturer } from './manufacturer.entity';
+import { PaginationDto } from './pagination.dto';
 
 @EntityRepository(Manufacturer)
 export class ManufacturerRepository extends Repository<Manufacturer> {
   private logger = new Logger('ManufacturerRepository');
 
-  public async getManufacturers(): Promise<Manufacturer[]> {
-    const query = this.createQueryBuilder('manufacturer');
+  public async getManufacturers(
+    paginationDto: PaginationDto,
+  ): Promise<Manufacturer[]> {
+    const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
+    // const totalCount = await this.count();
+
+    const query = this.createQueryBuilder('manufacturer')
+      // .orderBy('createdAt', 'DESC')
+      .offset(skippedItems)
+      .limit(paginationDto.limit);
 
     try {
       const manufacturers = await query.getMany();

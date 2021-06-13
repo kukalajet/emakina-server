@@ -4,6 +4,7 @@ import { User } from '../users/user.entity';
 import { CreateManufacturerDto } from './create-manufacturer.dto';
 import { Manufacturer } from './manufacturer.entity';
 import { ManufacturerRepository } from './manufacturer.repository';
+import { PaginationDto } from './pagination.dto';
 
 @Injectable()
 export class ManufacturersService {
@@ -12,8 +13,10 @@ export class ManufacturersService {
     private manufacturerRepository: ManufacturerRepository,
   ) {}
 
-  public async getManufacturers(): Promise<Manufacturer[]> {
-    return this.manufacturerRepository.getManufacturers();
+  public async getManufacturers(
+    paginationDto: PaginationDto,
+  ): Promise<Manufacturer[]> {
+    return this.manufacturerRepository.getManufacturers(paginationDto);
   }
 
   public async deleteManufacturer(id: number, user: User): Promise<void> {

@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -16,6 +17,7 @@ import { User } from '../users/user.entity';
 import { CreateManufacturerDto } from './create-manufacturer.dto';
 import { Manufacturer } from './manufacturer.entity';
 import { ManufacturersService } from './manufacturers.service';
+import { PaginationDto } from './pagination.dto';
 
 @Controller('manufacturers')
 export class ManufacturersController {
@@ -24,9 +26,12 @@ export class ManufacturersController {
   constructor(private manufacturersService: ManufacturersService) {}
 
   @Get()
-  public getManufacturers() {
+  public getManufacturers(@Query(ValidationPipe) paginationDto: PaginationDto) {
     this.logger.verbose('Retrieving all manufacturers.');
-    return this.manufacturersService.getManufacturers();
+    return this.manufacturersService.getManufacturers({
+      ...paginationDto,
+      limit: paginationDto.limit > 20 ? 20 : paginationDto.limit,
+    });
   }
 
   @Post()
