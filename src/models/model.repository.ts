@@ -4,14 +4,21 @@ import { EntityRepository, Repository } from 'typeorm';
 import { CreateModelDto } from './create-model.dto';
 import { Model } from './model.entity';
 import { ManufacturersModule } from 'src/manufacturers/manufacturers.module';
-import { Manufacturer } from 'src/manufacturers';
+import { Manufacturer } from '../manufacturers';
+import { PaginationDto } from './pagination.dto';
 
 @EntityRepository(Model)
 export class ModelRepository extends Repository<Model> {
   private logger = new Logger('ModelRepository');
 
-  public async getModels(): Promise<Model[]> {
-    const query = this.createQueryBuilder('model');
+  public async getModels(paginationDto: PaginationDto): Promise<Model[]> {
+    const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
+    // const totalCount = await this.count();
+
+    const query = this.createQueryBuilder('model')
+      // .orderBy('createdAt', 'DESC')
+      .offset(skippedItems)
+      .limit(paginationDto.limit);
 
     try {
       const models = await query.getMany();

@@ -2,7 +2,7 @@ import { Transform } from 'class-transformer';
 import { IsNumber } from 'class-validator';
 
 export class PaginationDto {
-  @Transform(location => parseInt(location))
+  @Transform(model => parseInt(model))
   @IsNumber()
   page: number;
 

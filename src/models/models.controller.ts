@@ -7,6 +7,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -16,6 +17,7 @@ import { User } from '../users/user.entity';
 import { CreateModelDto } from './create-model.dto';
 import { Model } from './model.entity';
 import { ModelsService } from './models.service';
+import { PaginationDto } from './pagination.dto';
 
 @Controller('models')
 export class ModelsController {
@@ -24,9 +26,12 @@ export class ModelsController {
   constructor(private modelsService: ModelsService) {}
 
   @Get()
-  public getModels() {
+  public getModels(@Query(ValidationPipe) paginationDto: PaginationDto) {
     this.logger.verbose('Retrieving all models.');
-    return this.modelsService.getModels();
+    return this.modelsService.getModels({
+      ...paginationDto,
+      limit: paginationDto.limit > 20 ? 20 : paginationDto.limit,
+    });
   }
 
   @Post()

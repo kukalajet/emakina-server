@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationDto } from 'src/listings/pagination.dto';
 import { ManufacturerRepository } from '../manufacturers/manufacturer.repository';
 import { User } from '../users/user.entity';
 import { CreateModelDto } from './create-model.dto';
@@ -15,8 +16,8 @@ export class ModelsService {
     private manufacturerRepository: ManufacturerRepository,
   ) {}
 
-  public async getModels(): Promise<Model[]> {
-    return this.modelRepository.getModels();
+  public async getModels(paginationDto: PaginationDto): Promise<Model[]> {
+    return this.modelRepository.getModels(paginationDto);
   }
 
   public async deleteModel(id: number, user: User): Promise<void> {
