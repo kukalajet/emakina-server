@@ -13,6 +13,8 @@ import {
 } from '@nestjs/common';
 import * as config from 'config';
 import { OAuth2Client } from 'google-auth-library';
+import fetch from 'node-fetch';
+import { FacebookAuthCredentialsDto } from 'src/auth/dto/facebook-auth-credentials.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -62,7 +64,7 @@ export class UserRepository extends Repository<User> {
       photoUrl,
     } = googleAuthCredentialsDto;
 
-    const verifiedId = await this.validateIdToken(idToken);
+    const verifiedId = await this.validateTokenForGoogle(idToken);
     if (!verifiedId && verifiedId !== googleId) {
       throw new UnauthorizedException('Could not verify Google token');
     }
@@ -75,6 +77,7 @@ export class UserRepository extends Repository<User> {
     const newUser = new User();
     newUser.email = email;
     newUser.firstName = name;
+    newUser.googleId = googleId;
     // newUser.googleId = googleId;
     // newUser.photoUrl = photoUrl;
 
@@ -93,7 +96,7 @@ export class UserRepository extends Repository<User> {
     return user.id;
   }
 
-  async validateIdToken(idToken: string): Promise<string> {
+  async validateTokenForGoogle(idToken: string): Promise<string> {
     const googleClientId = config.get('auth').google_client_id;
     const client = new OAuth2Client(googleClientId);
     const ticket = await client.verifyIdToken({
@@ -103,6 +106,66 @@ export class UserRepository extends Repository<User> {
     const userId = payload.sub;
 
     return userId;
+  }
+
+  async validateFacebookToken(
+    facebookAuthCredentialsDto: FacebookAuthCredentialsDto,
+  ): Promise<number> {
+    const {
+      firstName,
+      lastName,
+      email,
+      photoUrl,
+      inputToken,
+      accessToken,
+      facebookId,
+    } = facebookAuthCredentialsDto;
+    const isTokenVerified = await this.validateTokenForFacebook(
+      inputToken,
+      accessToken,
+    );
+    if (!isTokenVerified) {
+      throw new UnauthorizedException('Could not verify Facebook token');
+    }
+
+    let user = await this.findOne({ email });
+    if (user) return user.id;
+
+    const newUser = new User();
+    newUser.email = email;
+    newUser.firstName = firstName;
+    newUser.lastName = lastName;
+    newUser.facebookId = facebookId;
+
+    try {
+    } catch (error) {
+      // duplicated unique field
+      if (error.code === '23505') {
+        throw new ConflictException('User already exists');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
+
+    user = await this.findOne({ email });
+    return user.id;
+  }
+
+  /**
+   * Makes a call to Facebook's Graph and checks if token is valid.
+   * @param inputToken
+   * @param accessToken
+   * @returns `True` if the token is valid, `false` otherwise.
+   */
+  async validateTokenForFacebook(
+    inputToken: string,
+    accessToken: string,
+  ): Promise<boolean> {
+    const payload = await fetch(
+      `https://graph.facebook.com/debug_token?input_token={${inputToken}}&access_token={${accessToken}}`,
+    );
+
+    return payload.is_valid;
   }
 
   private async hashPassword(password: string, salt: string): Promise<string> {

@@ -5,6 +5,7 @@ import {
   RegisterCredentialsDto,
   GoogleAuthCredentialsDto,
 } from './dto';
+import { FacebookAuthCredentialsDto } from './dto/facebook-auth-credentials.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -29,5 +30,13 @@ export class AuthController {
     @Body(ValidationPipe) googleAuthCredentialsDto: GoogleAuthCredentialsDto,
   ): Promise<{ accessToken: string }> {
     return this.authService.signInWithGoogle(googleAuthCredentialsDto);
+  }
+
+  @Post('/signinwithfacebook')
+  signInWithFacebook(
+    @Body(ValidationPipe)
+    facebookAuthCredentialsDto: FacebookAuthCredentialsDto,
+  ): Promise<{ accessToken: string }> {
+    return this.authService.signInWithFacebook(facebookAuthCredentialsDto);
   }
 }

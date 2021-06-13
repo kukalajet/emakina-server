@@ -7,6 +7,7 @@ import {
   GoogleAuthCredentialsDto,
   RegisterCredentialsDto,
 } from './dto';
+import { FacebookAuthCredentialsDto } from './dto/facebook-auth-credentials.dto';
 import { JwtPayload } from './jwt-payload.interface';
 
 @Injectable()
@@ -45,6 +46,21 @@ export class AuthService {
   ): Promise<{ accessToken: string }> {
     const id = await this.userRepository.validateGoogleIdToken(
       googleAuthCredentialsDto,
+    );
+    const payload: JwtPayload = { id };
+    const accessToken = await this.jwtService.sign(payload);
+    this.logger.debug(
+      `Generated JWT token for payload ${JSON.stringify(payload)}`,
+    );
+
+    return { accessToken };
+  }
+
+  async signInWithFacebook(
+    facebookAuthCredentialsDto: FacebookAuthCredentialsDto,
+  ): Promise<{ accessToken: string }> {
+    const id = await this.userRepository.validateFacebookToken(
+      facebookAuthCredentialsDto,
     );
     const payload: JwtPayload = { id };
     const accessToken = await this.jwtService.sign(payload);
