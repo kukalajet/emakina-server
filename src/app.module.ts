@@ -13,6 +13,9 @@ import { VehicleTypesModule } from './vehicle-types/vehicle-types.module';
 import { ValutesModule } from './valutes/valutes.module';
 import { ManufacturersModule } from './manufacturers/manufacturers.module';
 import { ModelsModule } from './models/models.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -29,6 +32,12 @@ import { ModelsModule } from './models/models.module';
     ValutesModule,
     ManufacturersModule,
     ModelsModule,
+    MulterModule.register({
+      dest: './files',
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
   ],
 })
 export class AppModule {}

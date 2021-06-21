@@ -8,17 +8,20 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { User, GetUser } from '../users';
 import { CreateListingDto } from './create-listing.dto';
 import { Listing } from './listing.entity';
 import { ListingsService } from './listings.service';
-import { PaginatedListingsDto } from './paginated-listings.dto';
 import { PaginationDto } from './pagination.dto';
 import { SearchListingDto } from './search-listing.dto';
+import { getImageFileFilter } from './utils';
 
 @Controller('listings')
 export class ListingsController {
@@ -52,8 +55,14 @@ export class ListingsController {
 
   @Post()
   @UseGuards(AuthGuard())
+  @UseInterceptors(
+    FilesInterceptor('images', 6, {
+      fileFilter: getImageFileFilter,
+    }),
+  )
   public createListing(
     @Body(ValidationPipe) createListingDto: CreateListingDto,
+    @UploadedFiles() images: Array<Express.Multer.File>,
     @GetUser() user: User,
   ): Promise<Listing> {
     this.logger.verbose(
@@ -61,7 +70,7 @@ export class ListingsController {
         createListingDto,
       )}.`,
     );
-    return this.listingsService.createListing(createListingDto, user);
+    return this.listingsService.createListing(createListingDto, images, user);
   }
 
   @Delete('/:id')

@@ -22,6 +22,7 @@ import { ModelsModule } from '../models/models.module';
 import { ModelRepository } from '../models/model.repository';
 import { ValutesModule } from '../valutes/valutes.module';
 import { ValuteRepository } from '../valutes/valute.repository';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [

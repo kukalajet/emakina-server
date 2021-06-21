@@ -14,6 +14,7 @@ import { Valute } from '../valutes';
 import { ListingStatus } from './listing-status.enum';
 import { SearchListingDto } from './search-listing.dto';
 import { PaginationDto } from './pagination.dto';
+import { writeFile, getExtension } from './utils/file-system';
 
 @EntityRepository(Listing)
 export class ListingRepository extends Repository<Listing> {
@@ -143,6 +144,7 @@ export class ListingRepository extends Repository<Listing> {
     model: Model,
     price: number,
     valute: Valute,
+    images: Array<Express.Multer.File>,
     user: User,
   ) {
     const listing = new Listing();
@@ -173,6 +175,17 @@ export class ListingRepository extends Repository<Listing> {
         error.stack,
       );
       throw new InternalServerErrorException();
+    }
+
+    if (images?.length) {
+      images.forEach((image, index) => {
+        const ext = getExtension(image.originalname);
+        console.log(`ext: ${ext}`);
+        const folder = listing.id;
+        const filename = index;
+
+        writeFile(`/public/${folder}`, filename.toString(), ext, image.buffer);
+      });
     }
 
     delete listing.user;

@@ -130,12 +130,10 @@ export class CreateListingDto {
 
   @IsNumber()
   @IsNotEmpty()
-  // @MaxLength(4)
   year: number;
 
   @IsNumber()
   @IsNotEmpty()
-  // @MaxLength(10)
   mileage: number;
 
   @IsDefined()

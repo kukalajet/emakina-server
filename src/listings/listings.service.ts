@@ -59,6 +59,7 @@ export class ListingsService {
 
   public async createListing(
     createListingDto: CreateListingDto,
+    images: Array<Express.Multer.File>,
     user: User,
   ): Promise<Listing> {
     const type = await this.vehicleTypeRepository.findOne({
@@ -157,6 +158,7 @@ export class ListingsService {
       model,
       createListingDto.price,
       valute,
+      images,
       user,
     );
   }
