@@ -14,13 +14,16 @@ import { Valute } from '../valutes';
 import { ListingStatus } from './listing-status.enum';
 import { SearchListingDto } from './search-listing.dto';
 import { PaginationDto } from './pagination.dto';
-import { writeFile, getExtension } from './utils/file-system';
+import { writeFile, getExtension, getFilesInFolder } from './utils/file-system';
 
 @EntityRepository(Listing)
 export class ListingRepository extends Repository<Listing> {
   private logger = new Logger('ListingRepository');
 
-  public async getListings(paginationDto: PaginationDto): Promise<Listing[]> {
+  public async getListings(
+    paginationDto: PaginationDto,
+    host: string,
+  ): Promise<Listing[]> {
     const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
     // const totalCount = await this.count();
 
@@ -40,6 +43,15 @@ export class ListingRepository extends Repository<Listing> {
 
     try {
       const listings = await query.getMany();
+
+      await Promise.all(
+        listings.map(async listing => {
+          const files = await getFilesInFolder(`/public/${listing.id}`);
+          const images = files.map(file => `${host}/${listing.id}/${file}`);
+          listing.images = images;
+        }),
+      );
+
       return listings;
     } catch (error) {
       this.logger.error(`Failed to get listings.`, error.stack);
@@ -50,8 +62,16 @@ export class ListingRepository extends Repository<Listing> {
   // TODO: Handle various valutes when querying.
   public async searchListings(
     searchListingDto: SearchListingDto,
+    paginationDto: PaginationDto,
+    host: string,
   ): Promise<Listing[]> {
+    const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
+    // const totalCount = await this.count();
+
     const query = this.createQueryBuilder('listing')
+      // .orderBy('createdAt', 'DESC')
+      .offset(skippedItems)
+      .limit(paginationDto.limit)
       .leftJoinAndSelect('listing.type', 'vehicle_type')
       .leftJoinAndSelect('listing.transmission', 'transmission')
       .leftJoinAndSelect('listing.fuel', 'fuel')
@@ -122,6 +142,15 @@ export class ListingRepository extends Repository<Listing> {
 
     try {
       const listings = await query.getMany();
+
+      await Promise.all(
+        listings.map(async listing => {
+          const files = await getFilesInFolder(`/public/${listing.id}`);
+          const images = files.map(file => `${host}/${listing.id}/${file}`);
+          listing.images = images;
+        }),
+      );
+
       return listings;
     } catch (error) {
       this.logger.error(`Failed to search for listings.`, error.stack);

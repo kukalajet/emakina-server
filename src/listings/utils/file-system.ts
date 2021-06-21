@@ -1,5 +1,5 @@
-import { InternalServerErrorException } from '@nestjs/common';
 import * as fs from 'fs';
+import { InternalServerErrorException } from '@nestjs/common';
 
 function getExtension(filename: string) {
   var i = filename.lastIndexOf('.');
@@ -17,8 +17,6 @@ function writeFile(
   const path = `./${folder}`;
   const file = `${path}/${filename}.${extension}`;
 
-  console.log(`file: ${file}`);
-
   fs.mkdir(path, { recursive: true }, function(err) {
     if (err) throw new InternalServerErrorException(err);
     fs.open(file, 'w', function(err, fd) {
@@ -33,4 +31,18 @@ function writeFile(
   });
 }
 
-export { writeFile, getExtension };
+function getFilesInFolder(folder: string): Promise<Array<string>> {
+  const path = `./${folder}`;
+  return new Promise((resolve, reject) => {
+    fs.readdir(path, (err, filenames) => {
+      if (err) {
+        resolve([]);
+        return;
+      }
+
+      resolve(filenames);
+    });
+  });
+}
+
+export { writeFile, getExtension, getFilesInFolder };

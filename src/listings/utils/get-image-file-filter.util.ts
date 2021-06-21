@@ -1,5 +1,5 @@
 export const getImageFileFilter = (
-  req: Request,
+  _: Request,
   file: Express.Multer.File,
   callback: (error: Error | null, acceptFile: boolean) => void,
 ) => {

@@ -41,14 +41,23 @@ export class ListingsService {
     private valuteRepository: ValuteRepository,
   ) {}
 
-  public async getListings(paginationDto: PaginationDto): Promise<Listing[]> {
-    return this.listingRepository.getListings(paginationDto);
+  public async getListings(
+    paginationDto: PaginationDto,
+    host: string,
+  ): Promise<Listing[]> {
+    return this.listingRepository.getListings(paginationDto, host);
   }
 
   public async searchListings(
     searchListingDto: SearchListingDto,
+    paginationDto: PaginationDto,
+    host: string,
   ): Promise<Listing[]> {
-    return this.listingRepository.searchListings(searchListingDto);
+    return this.listingRepository.searchListings(
+      searchListingDto,
+      paginationDto,
+      host,
+    );
   }
 
   public async deleteListing(id: number, user: User): Promise<void> {

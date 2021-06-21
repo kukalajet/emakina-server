@@ -55,7 +55,7 @@ export class Listing extends BaseEntity {
   )
   fuel: Fuel;
 
-  // TODO: add images.
+  images: Array<string>;
 
   @ManyToOne(
     type => Plate,

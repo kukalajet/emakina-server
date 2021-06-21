@@ -8,11 +8,13 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  Req,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
   ValidationPipe,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { User, GetUser } from '../users';
@@ -31,26 +33,42 @@ export class ListingsController {
 
   @Get()
   public getListings(
+    @Req() request: Request,
     @Query(ValidationPipe) paginationDto: PaginationDto,
   ): Promise<Listing[]> {
     this.logger.verbose(
       `Retrieve all listings. Data: ${JSON.stringify(paginationDto)}`,
     );
 
-    return this.listingsService.getListings({
-      ...paginationDto,
-      limit: paginationDto.limit > 20 ? 20 : paginationDto.limit,
-    });
+    const host = request.headers.host;
+    return this.listingsService.getListings(
+      {
+        ...paginationDto,
+        limit: paginationDto.limit > 20 ? 20 : paginationDto.limit,
+      },
+      host,
+    );
   }
 
   @Post('searches')
   public getSeachedListings(
+    @Req() request: Request,
     @Body(ValidationPipe) searchListingDto: SearchListingDto,
+    @Query(ValidationPipe) paginationDto: PaginationDto,
   ): Promise<Listing[]> {
     this.logger.verbose(
       `Searching for listings. Query: ${JSON.stringify(searchListingDto)}.`,
     );
-    return this.listingsService.searchListings(searchListingDto);
+
+    const host = request.headers.host;
+    return this.listingsService.searchListings(
+      searchListingDto,
+      {
+        ...paginationDto,
+        limit: paginationDto.limit > 20 ? 20 : paginationDto.limit,
+      },
+      host,
+    );
   }
 
   @Post()
@@ -61,7 +79,8 @@ export class ListingsController {
     }),
   )
   public createListing(
-    @Body(ValidationPipe) createListingDto: CreateListingDto,
+    // @Body(ValidationPipe) createListingDto: CreateListingDto,
+    @Body() createListingDto: CreateListingDto,
     @UploadedFiles() images: Array<Express.Multer.File>,
     @GetUser() user: User,
   ): Promise<Listing> {
