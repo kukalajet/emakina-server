@@ -59,19 +59,43 @@ export class ListingRepository extends Repository<Listing> {
     }
   }
 
+  public async getListingById(id: number, host: string): Promise<Listing> {
+    const query = this.createQueryBuilder('listing')
+      .leftJoinAndSelect('listing.type', 'vehicle_type')
+      .leftJoinAndSelect('listing.transmission', 'transmission')
+      .leftJoinAndSelect('listing.fuel', 'fuel')
+      .leftJoinAndSelect('listing.plate', 'plate')
+      .leftJoinAndSelect('listing.color', 'color')
+      .leftJoinAndSelect('listing.location', 'location')
+      .leftJoinAndSelect('listing.manufacturer', 'manufacturer')
+      .leftJoinAndSelect('listing.model', 'model')
+      .leftJoinAndSelect('listing.valute', 'valute')
+      .andWhere('listing.id = :id', { id });
+
+    try {
+      const listing = await query.getOne();
+
+      const files = await getFilesInFolder(`/public/${listing.id}`);
+      const images = files.map(file => `${host}/${listing.id}/${file}`);
+      listing.images = images;
+
+      return listing;
+    } catch (error) {
+      this.logger.error(`Failed to search for listings.`, error.stack);
+      throw new InternalServerErrorException();
+    }
+  }
+
   // TODO: Handle various valutes when querying.
   public async searchListings(
     searchListingDto: SearchListingDto,
     paginationDto: PaginationDto,
     host: string,
   ): Promise<Listing[]> {
-    const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
     // const totalCount = await this.count();
 
     const query = this.createQueryBuilder('listing')
       // .orderBy('createdAt', 'DESC')
-      .offset(skippedItems)
-      .limit(paginationDto.limit)
       .leftJoinAndSelect('listing.type', 'vehicle_type')
       .leftJoinAndSelect('listing.transmission', 'transmission')
       .leftJoinAndSelect('listing.fuel', 'fuel')
@@ -81,6 +105,12 @@ export class ListingRepository extends Repository<Listing> {
       .leftJoinAndSelect('listing.manufacturer', 'manufacturer')
       .leftJoinAndSelect('listing.model', 'model')
       .leftJoinAndSelect('listing.valute', 'valute');
+
+    if (paginationDto?.limit && paginationDto?.page) {
+      const skippedItems = (paginationDto.page - 1) * paginationDto.limit;
+      query.offset(skippedItems);
+      query.limit(paginationDto.limit);
+    }
 
     if (searchListingDto.manufacturerId) {
       query.andWhere('listing.manufacturerId = :manufacturerId', {
@@ -138,6 +168,10 @@ export class ListingRepository extends Repository<Listing> {
           price: searchListingDto.price[1],
         });
       }
+    }
+
+    if (searchListingDto.ids?.length) {
+      query.andWhere('listing.id IN (:...ids)', { ids: searchListingDto.ids });
     }
 
     try {

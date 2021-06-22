@@ -24,6 +24,7 @@ import { ListingsService } from './listings.service';
 import { PaginationDto } from './pagination.dto';
 import { SearchListingDto } from './search-listing.dto';
 import { getImageFileFilter } from './utils';
+import { FindOneParams } from './find-one.dto';
 
 @Controller('listings')
 export class ListingsController {
@@ -48,6 +49,15 @@ export class ListingsController {
       },
       host,
     );
+  }
+
+  @Get(':id')
+  public getListingById(
+    @Req() request: Request,
+    @Param(ValidationPipe) params: FindOneParams,
+  ): Promise<Listing> {
+    const host = request.headers.host;
+    return this.listingsService.getListingById(params.id, host);
   }
 
   @Post('searches')

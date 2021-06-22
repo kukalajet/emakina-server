@@ -4,20 +4,30 @@ import {
   ArrayMinSize,
   IsArray,
   IsNumber,
+  IsOptional,
   ValidateNested,
 } from 'class-validator';
 
 export class SearchListingDto {
+  @IsArray()
+  @IsOptional()
+  @Type(() => Number)
+  ids: number[];
+
   @IsNumber()
+  @IsOptional()
   manufacturerId: number;
 
   @IsNumber()
+  @IsOptional()
   modelId: number;
 
   @IsNumber()
+  @IsOptional()
   fuelId: number;
 
   @IsArray()
+  @IsOptional()
   @ValidateNested({ each: true })
   @ArrayMinSize(2)
   @ArrayMaxSize(2)
@@ -25,9 +35,11 @@ export class SearchListingDto {
   matriculation: number[];
 
   @IsNumber()
+  @IsOptional()
   transmissionId: number;
 
   @IsArray()
+  @IsOptional()
   @ValidateNested({ each: true })
   @ArrayMinSize(2)
   @ArrayMaxSize(2)
@@ -35,8 +47,10 @@ export class SearchListingDto {
   price: number[];
 
   @IsNumber()
+  @IsOptional()
   valuteId: number;
 
   @IsNumber()
+  @IsOptional()
   mileage: number;
 }
