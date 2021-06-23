@@ -14,7 +14,7 @@ import {
 import * as config from 'config';
 import { OAuth2Client } from 'google-auth-library';
 import fetch from 'node-fetch';
-import { FacebookAuthCredentialsDto } from 'src/auth/dto/facebook-auth-credentials.dto';
+import { FacebookAuthCredentialsDto } from '../auth/dto/facebook-auth-credentials.dto';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {

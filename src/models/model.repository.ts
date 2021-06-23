@@ -1,9 +1,7 @@
 import { InternalServerErrorException, Logger } from '@nestjs/common';
 import { User } from '../users';
 import { EntityRepository, Repository } from 'typeorm';
-import { CreateModelDto } from './create-model.dto';
 import { Model } from './model.entity';
-import { ManufacturersModule } from 'src/manufacturers/manufacturers.module';
 import { Manufacturer } from '../manufacturers';
 import { PaginationDto } from './pagination.dto';
 

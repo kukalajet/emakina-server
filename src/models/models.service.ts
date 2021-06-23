@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/listings/pagination.dto';
+import { PaginationDto } from '../listings/pagination.dto';
 import { ManufacturerRepository } from '../manufacturers/manufacturer.repository';
 import { User } from '../users/user.entity';
 import { CreateModelDto } from './create-model.dto';
