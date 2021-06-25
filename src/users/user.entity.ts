@@ -7,6 +7,7 @@ import {
   Unique,
 } from 'typeorm';
 import { Listing } from '../listings';
+import { Role } from '../auth/role.enum';
 import * as bcrypt from 'bcryptjs';
 
 @Entity()
@@ -29,6 +30,9 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   facebookId: string;
+
+  @Column({ type: 'text', array: true })
+  roles: Role[];
 
   @Column()
   password: string;

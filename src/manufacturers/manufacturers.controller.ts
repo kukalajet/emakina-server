@@ -12,6 +12,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Role } from '../auth/role.enum';
+import { RolesGuard } from '../auth/roles.guard';
 import { GetUser } from '../users/get-user.decorator';
 import { User } from '../users/user.entity';
 import { CreateManufacturerDto } from './create-manufacturer.dto';
@@ -35,7 +37,7 @@ export class ManufacturersController {
   }
 
   @Post()
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public createManufacturer(
     @Body(ValidationPipe) createManufacturerDto: CreateManufacturerDto,
     @GetUser() user: User,
@@ -54,7 +56,7 @@ export class ManufacturersController {
   }
 
   @Delete('/:id')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public deleteManufacturer(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,

@@ -25,6 +25,8 @@ import { PaginationDto } from './pagination.dto';
 import { SearchListingDto } from './search-listing.dto';
 import { getImageFileFilter } from './utils';
 import { FindOneParams } from './find-one.dto';
+import { Role } from '../auth/role.enum';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Controller('listings')
 export class ListingsController {
@@ -82,7 +84,7 @@ export class ListingsController {
   }
 
   @Post()
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.User, Role.Admin))
   @UseInterceptors(
     FilesInterceptor('images', 6, {
       fileFilter: getImageFileFilter,
@@ -103,7 +105,7 @@ export class ListingsController {
   }
 
   @Delete('/:id')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public deleteListing(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,

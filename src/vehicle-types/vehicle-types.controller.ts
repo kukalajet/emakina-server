@@ -11,6 +11,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Role } from '../auth/role.enum';
+import { RolesGuard } from '../auth/roles.guard';
 import { GetUser } from '../users/get-user.decorator';
 import { User } from '../users/user.entity';
 import { CreateVehicleTypeDto } from './create-vehicle-type.dto';
@@ -30,7 +32,7 @@ export class VehicleTypesController {
   }
 
   @Post()
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public createVehicleType(
     @Body(ValidationPipe) createVehicleTypeDto: CreateVehicleTypeDto,
     @GetUser() user: User,
@@ -47,7 +49,7 @@ export class VehicleTypesController {
   }
 
   @Delete('/:id')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public deleteVehicleType(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,

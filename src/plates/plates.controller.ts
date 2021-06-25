@@ -12,6 +12,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Role } from '../auth/role.enum';
+import { RolesGuard } from '../auth/roles.guard';
 import { GetUser } from '../users/get-user.decorator';
 import { User } from '../users/user.entity';
 import { CreatePlateDto } from './create-plate.dto';
@@ -35,7 +37,7 @@ export class PlatesController {
   }
 
   @Post()
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public createPlate(
     @Body(ValidationPipe) createPlateDto: CreatePlateDto,
     @GetUser() user: User,
@@ -49,7 +51,7 @@ export class PlatesController {
   }
 
   @Delete('/:id')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public deletePlate(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,

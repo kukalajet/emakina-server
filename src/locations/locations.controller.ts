@@ -12,6 +12,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Role } from '../auth/role.enum';
+import { RolesGuard } from '../auth/roles.guard';
 import { GetUser } from '../users/get-user.decorator';
 import { User } from '../users/user.entity';
 import { CreateLocationDto } from './create-location.dto';
@@ -39,7 +41,7 @@ export class LocationsController {
   }
 
   @Post()
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public createLocation(
     @Body(ValidationPipe) createLocationDto: CreateLocationDto,
     @GetUser() user: User,
@@ -53,7 +55,7 @@ export class LocationsController {
   }
 
   @Delete('/:id')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public deleteLocation(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,

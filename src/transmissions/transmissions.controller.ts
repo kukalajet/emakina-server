@@ -16,6 +16,8 @@ import { User } from '../users/user.entity';
 import { Transmission } from './transmission.entity';
 import { TransmissionsService } from './transmissions.service';
 import { CreateTransmissionDto } from './create-transmission.dto';
+import { RolesGuard } from '../auth/roles.guard';
+import { Role } from '../auth/role.enum';
 
 @Controller('transmissions')
 export class TransmissionsController {
@@ -30,7 +32,7 @@ export class TransmissionsController {
   }
 
   @Post()
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public createTransmission(
     @Body(ValidationPipe) createTransmissionDto: CreateTransmissionDto,
     @GetUser() user: User,
@@ -47,7 +49,7 @@ export class TransmissionsController {
   }
 
   @Delete('/:id')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public deleteTransmission(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,

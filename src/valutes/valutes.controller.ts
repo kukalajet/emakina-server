@@ -11,6 +11,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Role } from '../auth/role.enum';
+import { RolesGuard } from '../auth/roles.guard';
 import { GetUser } from '../users/get-user.decorator';
 import { User } from '../users/user.entity';
 import { CreateValuteDto } from './create-valute.dto';
@@ -30,7 +32,7 @@ export class ValutesController {
   }
 
   @Post()
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public createValute(
     @Body(ValidationPipe) createValuteDto: CreateValuteDto,
     @GetUser() user: User,
@@ -44,7 +46,7 @@ export class ValutesController {
   }
 
   @Delete('/:id')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public deleteValute(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,

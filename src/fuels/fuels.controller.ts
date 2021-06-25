@@ -16,6 +16,8 @@ import { User } from '../users/user.entity';
 import { Fuel } from './fuel.entity';
 import { FuelsService } from './fuels.service';
 import { CreateFuelDto } from './create-fuel.dto';
+import { Role } from '../auth/role.enum';
+import { RolesGuard } from '../auth/roles.guard';
 
 @Controller('fuels')
 export class FuelsController {
@@ -30,7 +32,7 @@ export class FuelsController {
   }
 
   @Post()
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public createFuel(
     @Body(ValidationPipe) createFuelDto: CreateFuelDto,
     @GetUser() user: User,
@@ -44,7 +46,7 @@ export class FuelsController {
   }
 
   @Delete('/:id')
-  @UseGuards(AuthGuard())
+  @UseGuards(AuthGuard(), new RolesGuard(Role.Admin))
   public deleteFuel(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,
