@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { typeOrmConfig } from './config/typeorm.config';
@@ -44,6 +44,7 @@ console.log(typeOrmConfig);
 })
 export class AppModule {
   constructor() {
-    console.log('Inside AppModule');
+    const logger = new Logger('AppModule');
+    logger.verbose('Creating AppModule');
   }
 }

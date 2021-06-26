@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -23,4 +23,9 @@ const JWT_CONFIG = config.get('jwt');
   providers: [AuthService, JwtStrategy],
   exports: [JwtStrategy, PassportModule],
 })
-export class AuthModule {}
+export class AuthModule {
+  constructor() {
+    const logger = new Logger('AuthModule');
+    logger.verbose('Creating AuthModule');
+  }
+}
