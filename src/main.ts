@@ -20,8 +20,4 @@ async function bootstrap() {
   logger.log(`Application listening on port ${PORT}`);
 }
 
-process.on('uncaughtException', err => {
-  Logger.warn(err, 'LOGGER', false);
-});
-
 bootstrap();

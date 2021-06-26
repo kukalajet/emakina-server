@@ -21,8 +21,9 @@ console.log(typeOrmConfig);
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(typeOrmConfig),
+    // TypeOrmModule.forRoot(typeOrmConfig),
     AuthModule,
+    TypeOrmModule.forRoot(typeOrmConfig),
     UsersModule,
     ListingsModule,
     LocationsModule,
