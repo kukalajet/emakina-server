@@ -42,4 +42,8 @@ console.log(typeOrmConfig);
     }),
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    console.log('Inside AppModule');
+  }
+}
