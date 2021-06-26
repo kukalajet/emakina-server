@@ -17,14 +17,12 @@ import { MulterModule } from '@nestjs/platform-express';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
-console.log(typeOrmConfig);
-
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
     AuthModule,
-    UsersModule,
     ListingsModule,
+    UsersModule,
     LocationsModule,
     ColorsModule,
     FuelsModule,
@@ -34,12 +32,12 @@ console.log(typeOrmConfig);
     ValutesModule,
     ManufacturersModule,
     ModelsModule,
-    // MulterModule.register({
-    //   dest: './files',
-    // }),
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '..', 'public'),
-    // }),
+    MulterModule.register({
+      dest: './files',
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
   ],
 })
 export class AppModule {
