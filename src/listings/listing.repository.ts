@@ -15,6 +15,7 @@ import { ListingStatus } from './listing-status.enum';
 import { SearchListingDto } from './search-listing.dto';
 import { PaginationDto } from './pagination.dto';
 import { writeFile, getExtension, getFilesInFolder } from './utils/file-system';
+import { Express } from 'express';
 
 @EntityRepository(Listing)
 export class ListingRepository extends Repository<Listing> {
