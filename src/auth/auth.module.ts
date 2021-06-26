@@ -10,9 +10,6 @@ import { UserRepository } from '../users/users.repository';
 
 const JWT_CONFIG = config.get('jwt');
 
-console.log('JWT_CONFIG:');
-console.log(JWT_CONFIG);
-
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
