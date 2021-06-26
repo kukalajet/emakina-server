@@ -207,7 +207,8 @@ export class ListingRepository extends Repository<Listing> {
     model: Model,
     price: number,
     valute: Valute,
-    images: Array<Express.Multer.File>,
+    // images: Array<Express.Multer.File>,
+    images: Array<any>,
     user: User,
   ) {
     const listing = new Listing();

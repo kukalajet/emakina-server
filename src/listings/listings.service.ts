@@ -71,7 +71,8 @@ export class ListingsService {
 
   public async createListing(
     createListingDto: CreateListingDto,
-    images: Array<Express.Multer.File>,
+    // images: Array<Express.Multer.File>,
+    images: Array<any>,
     user: User,
   ): Promise<Listing> {
     const type = await this.vehicleTypeRepository.findOne({
