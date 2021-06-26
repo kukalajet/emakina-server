@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
 import { FuelsController } from './fuels.controller';
@@ -10,4 +10,9 @@ import { FuelsService } from './fuels.service';
   controllers: [FuelsController],
   providers: [FuelsService],
 })
-export class FuelsModule {}
+export class FuelsModule {
+  constructor() {
+    const logger = new Logger('FuelsModule');
+    logger.verbose('Creating FuelsModule');
+  }
+}

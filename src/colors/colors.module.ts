@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
 import { ColorRepository } from './color.repository';
@@ -10,4 +10,9 @@ import { ColorsService } from './colors.service';
   controllers: [ColorsController],
   providers: [ColorsService],
 })
-export class ColorsModule {}
+export class ColorsModule {
+  constructor() {
+    const logger = new Logger('ColorsModule');
+    logger.verbose('Creating ColorsModule');
+  }
+}

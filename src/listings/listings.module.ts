@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransmissionRepository } from '../transmissions/transmission.repository';
 import { TransmissionsModule } from '../transmissions/transmissions.module';
@@ -49,4 +49,9 @@ import { ValuteRepository } from '../valutes/valute.repository';
   controllers: [ListingsController],
   providers: [ListingsService],
 })
-export class ListingsModule {}
+export class ListingsModule {
+  constructor() {
+    const logger = new Logger('ListingsModule');
+    logger.verbose('Creating ListingsModule');
+  }
+}
