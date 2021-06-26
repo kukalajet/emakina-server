@@ -17,7 +17,7 @@ async function bootstrap() {
     logger.log(`Accepting requests from "${serverConfig.origin}"`);
   }
 
-  const PORT = process.env.PORT || serverConfig.port;
+  const PORT = parseInt(`${process.env.PORT}`) || serverConfig.port;
   console.log(`port: ${PORT}`);
   console.log(`process.env.PORT: ${process.env.PORT}`);
 
