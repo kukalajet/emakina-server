@@ -37,9 +37,9 @@ console.log(typeOrmConfig);
     MulterModule.register({
       dest: './files',
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
-    }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', 'public'),
+    // }),
   ],
 })
 export class AppModule {
