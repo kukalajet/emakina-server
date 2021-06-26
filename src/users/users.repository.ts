@@ -15,6 +15,7 @@ import * as config from 'config';
 import { OAuth2Client } from 'google-auth-library';
 import fetch from 'node-fetch';
 import { FacebookAuthCredentialsDto } from '../auth/dto/facebook-auth-credentials.dto';
+import { Role } from '../auth/role.enum';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -25,12 +26,14 @@ export class UserRepository extends Repository<User> {
     user.email = email;
     user.firstName = firstName;
     user.lastName = lastName;
+    user.roles = [Role.User];
     user.salt = await bcrypt.genSalt();
     user.password = await this.hashPassword(password, user.salt);
 
     try {
       await user.save();
     } catch (error) {
+      console.log(error);
       // duplicated unique field
       if (error.code === '23505') {
         throw new ConflictException('User already exists');
