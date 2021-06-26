@@ -1,7 +1,7 @@
 export const getImageFileFilter = (
   _: Request,
-  // file: Express.Multer.File,
-  file: any,
+  file: Express.Multer.File,
+  // file: any,
   callback: (error: Error | null, acceptFile: boolean) => void,
 ) => {
   if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {

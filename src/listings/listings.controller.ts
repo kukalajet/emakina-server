@@ -93,8 +93,8 @@ export class ListingsController {
   public createListing(
     // @Body(ValidationPipe) createListingDto: CreateListingDto,
     @Body() createListingDto: CreateListingDto,
-    // @UploadedFiles() images: Array<Express.Multer.File>,
-    @UploadedFiles() images: Array<any>,
+    @UploadedFiles() images: Array<Express.Multer.File>,
+    // @UploadedFiles() images: Array<any>,
     @GetUser() user: User,
   ): Promise<Listing> {
     this.logger.verbose(
