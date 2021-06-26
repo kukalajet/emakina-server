@@ -34,9 +34,9 @@ console.log(typeOrmConfig);
     ValutesModule,
     ManufacturersModule,
     ModelsModule,
-    MulterModule.register({
-      dest: './files',
-    }),
+    // MulterModule.register({
+    //   dest: './files',
+    // }),
     // ServeStaticModule.forRoot({
     //   rootPath: join(__dirname, '..', 'public'),
     // }),
