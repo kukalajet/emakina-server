@@ -1,18 +1,13 @@
 server:
   origin: postgres://xrlxglfdxqrvza:af653576792755e3ecb9978519ca558c1debfbab91921fa5239f4b661fa3f52f@ec2-99-80-200-225.eu-west-1.compute.amazonaws.com:5432/d2on2n7b0o9oh0
-  port: 8080
+  port: 5432
 
 db:
-  host: ''
-  username: ''
-  password: ''
-  database: ''
+  host: 'ec2-99-80-200-225.eu-west-1.compute.amazonaws.com'
+  username: 'xrlxglfdxqrvza'
+  password: 'af653576792755e3ecb9978519ca558c1debfbab91921fa5239f4b661fa3f52f'
+  database: 'd2on2n7b0o9oh0'
   synchronize: true
-  # host: 'ec2-99-80-200-225.eu-west-1.compute.amazonaws.com'
-  # username: 'xrlxglfdxqrvza'
-  # password: 'af653576792755e3ecb9978519ca558c1debfbab91921fa5239f4b661fa3f52f'
-  # database: 'd2on2n7b0o9oh0'
-  # synchronize: true
 
 jwt:
   secret: 'topSecret51'
