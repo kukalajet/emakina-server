@@ -1,6 +1,6 @@
 server:
   origin: postgres://ywlfgasjgqfbfc:c279f06cf0a82990f9f64bfca6b3fbdad6e5bf3d7db5905b3a5f59d361f5cd9b@ec2-54-74-156-137.eu-west-1.compute.amazonaws.com:5432/d2d1cq2iuu8mng
-  port: 5432
+  port: 8080
 
 db:
   host: 'ec2-54-74-156-137.eu-west-1.compute.amazonaws.com'
