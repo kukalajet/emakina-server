@@ -15,4 +15,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   ssl: {
     rejectUnauthorized: false,
   },
+
+  url:
+    'postgres://xrlxglfdxqrvza:af653576792755e3ecb9978519ca558c1debfbab91921fa5239f4b661fa3f52f@ec2-99-80-200-225.eu-west-1.compute.amazonaws.com:5432/d2on2n7b0o9oh0',
 };

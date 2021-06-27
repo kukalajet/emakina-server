@@ -21,8 +21,8 @@ import { join } from 'path';
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
     AuthModule,
-    ListingsModule,
     UsersModule,
+    ListingsModule,
     LocationsModule,
     ColorsModule,
     FuelsModule,
